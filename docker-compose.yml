@@ -1,0 +1,26 @@
+version: "3"
+services:
+  apache:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - "./files:/var/www/html"
+    depends_on:
+      - "mariadb"
+      - "redis"
+    restart: unless-stopped
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+  mariadb:
+    image: "mariadb:latest"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - "./database:/var/lib/mysql"
+    restart: unless-stopped
